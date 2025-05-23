@@ -1,27 +1,26 @@
-import React from 'react';
-import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
-import { UserCircleIcon } from '@heroicons/react/24/solid';
-import { LogOut, Mail } from 'lucide-react';
-import { Button } from './ui/button';
-import { useNavigate } from 'react-router-dom'
+import React from "react";
+import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
+import { UserCircleIcon } from "@heroicons/react/24/solid";
+import { LogOut, Mail } from "lucide-react";
+import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
 
 export default function Header({ toggleDarkMode, isDarkMode }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('flickMailJWT');
-    localStorage.removeItem('flickMailPwd');
-    localStorage.removeItem('flickuserId');
-    localStorage.removeItem('flickMail');
-    navigate('/');
+    localStorage.removeItem("flickMailJWT");
+    localStorage.removeItem("flickMailPwd");
+    localStorage.removeItem("flickuserId");
+    localStorage.removeItem("flickMail");
+    navigate("/");
   };
 
   return (
     <header className="bg-white dark:bg-gray-800 border-b dark:border-gray-700 py-4 px-6">
       <div className="flex items-center justify-between">
         <div className="flex-1 max-w-2xl">
-          
-            <h1 className=' font-semibold text-2xl'>FlickMail</h1>
+          <h1 className=" font-semibold text-2xl">FlickMail</h1>
           {/* <div className="relative">
             <MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
@@ -45,9 +44,9 @@ export default function Header({ toggleDarkMode, isDarkMode }) {
             )}
           </button> */}
           <div className="flex items-center space-x-2 text-gray-700 dark:text-gray-200">
-          <Button onClick={handleLogout}>
-          Logout   <LogOut /> 
-          </Button>
+            <Button onClick={handleLogout}>
+              Logout <LogOut />
+            </Button>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { UserGrowthChart } from '../components/AdminChart';
-import { UserList } from '../components/AdminInfo';
-import { StatsCards } from '../components/AdminStats';
+import React, { useState, useEffect } from "react";
+import { UserGrowthChart } from "../components/AdminChart";
+import { UserList } from "../components/AdminInfo";
+import { StatsCards } from "../components/AdminStats";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,13 +16,13 @@ import { Label } from "@/components/ui/label";
 
 function Dashboard() {
   const [isVerified, setIsVerified] = useState(false);
-  const [key, setKey] = useState('');
+  const [key, setKey] = useState("");
 
   const handleVerification = () => {
-    if (key === '123') {
+    if (key === "123") {
       setIsVerified(true);
     } else {
-      alert('Invalid key');
+      alert("Invalid key");
     }
   };
 
@@ -39,9 +39,9 @@ function Dashboard() {
               <div className="grid w-full items-center gap-4">
                 <div className="flex flex-col space-y-1.5">
                   {/* <Label htmlFor="name">Key</Label> */}
-                  <Input 
-                    id="name" 
-                    placeholder="Enter key" 
+                  <Input
+                    id="name"
+                    placeholder="Enter key"
                     value={key}
                     type="password"
                     onChange={(e) => setKey(e.target.value)}
@@ -70,14 +70,13 @@ function Dashboard() {
             <UserList />
           </div>
           <div className="lg:col-span-5">
-            <div className="grid gap-4">
-            </div>
+            <div className="grid gap-4"></div>
           </div>
         </div>
         <UserGrowthChart />
       </div>
     </div>
   );
-}    
+}
 
 export default Dashboard;

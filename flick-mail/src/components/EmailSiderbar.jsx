@@ -5,13 +5,13 @@ import { Input } from '../components/ui/input'
 import { Copy, RefreshCw, Trash2 } from 'lucide-react'
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  InboxIcon, 
-  StarIcon, 
-  ArchiveBoxIcon,
-  TrashIcon,
-  TagIcon,
-  Cog6ToothIcon
+import {
+    InboxIcon,
+    StarIcon,
+    ArchiveBoxIcon,
+    TrashIcon,
+    TagIcon,
+    Cog6ToothIcon
 } from '@heroicons/react/24/outline';
 import {
     AlertDialog,
@@ -32,50 +32,50 @@ const navigation = [
     { name: 'Trash', icon: TrashIcon },
     { name: 'Labels', icon: TagIcon },
     { name: 'Settings', icon: Cog6ToothIcon },
-  ];
-  
-  export default function Sidebar({ onEmailsUpdate }) {
+];
+
+export default function Sidebar({ onEmailsUpdate }) {
     const [selected, setSelected] = useState('Inbox');
-    const [emailAddress, setEmailAddress] = useState('Loading...') 
+    const [emailAddress, setEmailAddress] = useState('Loading...')
     const [selectedEmail, setSelectedEmail] = useState(null)
-    const [emails, setEmails] = useState([]) 
+    const [emails, setEmails] = useState([])
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const { toast } = useToast()
 
     useEffect(() => {
-      const fetchEmail = async () => {
-         
-          const storedEmail = localStorage.getItem('flickMail');
-          
-          if (storedEmail) {
-             
-              setEmailAddress(storedEmail);
-              return;
-          }
+        const fetchEmail = async () => {
+
+            const storedEmail = localStorage.getItem('flickMail');
+
+            if (storedEmail) {
+
+                setEmailAddress(storedEmail);
+                return;
+            }
 
 
-try {
-  const response = await createMailAPI();
-  if (response.status === 200 && response.data.length > 0) {
-      const userEmail = response.data[0].user;     
-      const userPassword = response.data[0].pwd;    
-      setEmailAddress(userEmail);
-      
-      localStorage.setItem('flickMail', userEmail);
-      localStorage.setItem('flickMailPwd', userPassword);
-  } else {
-      console.error("Failed to fetch email or empty response");
-      setEmailAddress("Error loading email");
-  }
-} catch (error) {
-  console.error("Error fetching email:", error);
-  setEmailAddress("Error loading email");
-}
-      };
+            try {
+                const response = await createMailAPI();
+                if (response.status === 200 && response.data.length > 0) {
+                    const userEmail = response.data[0].user;
+                    const userPassword = response.data[0].pwd;
+                    setEmailAddress(userEmail);
 
-      fetchEmail();
-  }, []);
-    
+                    localStorage.setItem('flickMail', userEmail);
+                    localStorage.setItem('flickMailPwd', userPassword);
+                } else {
+                    console.error("Failed to fetch email or empty response");
+                    setEmailAddress("Error loading email");
+                }
+            } catch (error) {
+                console.error("Error fetching email:", error);
+                setEmailAddress("Error loading email");
+            }
+        };
+
+        fetchEmail();
+    }, []);
+
     const handleCopy = () => {
         navigator.clipboard.writeText(emailAddress)
         toast({
@@ -83,29 +83,29 @@ try {
             className: 'bg-green-600',
             title: "Email copied to clipboard!",
             position: 'top-center'
-          });
+        });
     }
-    
+
     const handleDelete = () => {
         setShowDeleteDialog(true);
     }
     const handleConfirmDelete = async () => {
-        
+
         localStorage.removeItem('flickMail');
         localStorage.removeItem('flickMailPwd');
         localStorage.removeItem('flickMailJWT');
-         try {
-            
+        try {
+
             const response = await createMailAPI();
-            
+
             if (response.status === 200 && response.data.length > 0) {
                 const userEmail = response.data[0].user;
                 const userPassword = response.data[0].pwd;
-                
-                
+
+
                 setEmailAddress(userEmail);
-                
-                
+
+
                 localStorage.setItem('flickMail', userEmail);
                 localStorage.setItem('flickMailPwd', userPassword);
                 setTimeout(() => {
@@ -116,7 +116,7 @@ try {
                     className: 'bg-green-600',
                     title: "Current email deleted, new one generated",
                     position: 'top-center'
-                  });
+                });
             } else {
                 console.error("Failed to fetch email or empty response");
                 setEmailAddress("Error loading email");
@@ -125,27 +125,27 @@ try {
             console.error("Error fetching email:", error);
             setEmailAddress("Error loading email");
         }
-        
-        setShowDeleteDialog(false);
-     };
 
-      const handleRefresh = async () => {
+        setShowDeleteDialog(false);
+    };
+
+    const handleRefresh = async () => {
         try {
             const storedEmail = localStorage.getItem('flickMail');
             const storedPassword = localStorage.getItem('flickMailPwd');
-             if (!storedEmail || !storedPassword) {
+            if (!storedEmail || !storedPassword) {
                 throw new Error('Email credentials not found');
             }
-             const refreshResponse = await refreshMailAPI({
+            const refreshResponse = await refreshMailAPI({
                 address: storedEmail,
                 password: storedPassword
             });
-             if (refreshResponse.status === 200) {
-                
+            if (refreshResponse.status === 200) {
+
                 const jwtToken = refreshResponse.data.jwtToken;
                 localStorage.setItem('flickMailJWT', jwtToken);
-                
-               
+
+
                 const receivedEmails = refreshResponse.data.messages?.['hydra:member'] || [];
                 console.log('Received Emails:', receivedEmails);
                 setEmails(receivedEmails);
@@ -166,13 +166,13 @@ try {
                 <h2 className="text-3xl font-semibold mb-2">Temporary Email</h2>
                 <p className="text-zinc-400 text-sm mb-4">Copy this email address to use it anywhere</p>
                 <div className="flex gap-2 mb-4">
-                    <Input 
+                    <Input
                         value={emailAddress}
                         readOnly
                         className="bg-zinc-800 border-zinc-700 text-white"
                     />
-                    <Button 
-                        variant="outline" 
+                    <Button
+                        variant="outline"
                         size="icon"
                         className="shrink-0 border-zinc-700 hover:bg-gray-200"
                         onClick={handleCopy}
@@ -192,32 +192,32 @@ try {
 
 
                     <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-                   <AlertDialogTrigger asChild>
-                       <Button
-                           variant="outline"
-                           className="flex-1 border-zinc-700 hover:text-red-600"
-                           onClick={handleDelete}
-                       >
-                           <Trash2 className="h-4 w-4 mr-2" />
-                           Delete
-                       </Button>
-                   </AlertDialogTrigger>
-                   <AlertDialogContent>
-                       <AlertDialogHeader>
-                           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                           <AlertDialogDescription>
-                               This action cannot be undone. This will permanently delete your
-                               temporary email address and remove all associated data.
-                           </AlertDialogDescription>
-                       </AlertDialogHeader>
-                       <AlertDialogFooter>
-                           <AlertDialogCancel>Cancel</AlertDialogCancel>
-                           <AlertDialogAction onClick={handleConfirmDelete}>Delete</AlertDialogAction>
-                       </AlertDialogFooter>
-                   </AlertDialogContent>
-               </AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button
+                                variant="outline"
+                                className="flex-1 border-zinc-700 hover:text-red-600"
+                                onClick={handleDelete}
+                            >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Delete
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This action cannot be undone. This will permanently delete your
+                                    temporary email address and remove all associated data.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={handleConfirmDelete}>Delete</AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
 
-                    
+
                     {/* <Button
                         variant="outline"
                         className="flex-1 border-zinc-700 hover:text-red-600"
@@ -239,7 +239,7 @@ try {
             <div className='bg-gray-200'>
                 {/* <p className='text-sm'>© FlickMail 2024</p> */}
             </div>
-            <Toaster/>
+            <Toaster />
         </div>
     );
-  }
+}
