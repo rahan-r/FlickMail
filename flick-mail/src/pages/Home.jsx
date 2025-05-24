@@ -36,7 +36,7 @@ export default function Homepage() {
           <span className="font-semibold">
             <img
               src="https://i.postimg.cc/FK3VVvGr/logo.png"
-              alt=""
+              alt="logo"
               style={{ height: "95px" }}
             />
           </span>
