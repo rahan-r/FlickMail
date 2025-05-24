@@ -33,12 +33,8 @@ export default function Homepage() {
       <header className="px-4 lg:px-6 h-14 flex items-center">
         <Link className="flex items-center justify-center" href="#">
           {/* <Mail className="h-6 w-6" /> */}
-{/*           <span className="font-semibold">
-            <img
-              src="https://i.postimg.cc/FK3VVvGr/logo.png"
-              alt="logo"
-              style={{ height: "95px" }}
-            /> */}
+           <span className="font-semibold">
+            
           </span>
         </Link>
         <nav className="ml-[1100px] flex gap-4 sm:gap-12">
