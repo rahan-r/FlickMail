@@ -44,35 +44,41 @@ export default function Sidebar({ onEmailsUpdate }) {
 
     useEffect(() => {
         const fetchEmail = async () => {
+  const storedEmail = localStorage.getItem("flickMail");
 
-            const storedEmail = localStorage.getItem('flickMail');
+  if (storedEmail) {
+    setEmailAddress(storedEmail);
+    return;
+  }
 
-            if (storedEmail) {
+  let retries = 2;
+  let response = null;
 
-                setEmailAddress(storedEmail);
-                return;
-            }
+  while (retries-- > 0) {
+    try {
+      response = await createMailAPI();
 
+      if (response.status === 200 && response.data.length > 0) {
+        const userEmail = response.data[0].user;
+        const userPassword = response.data[0].pwd;
 
-            try {
-                const response = await createMailAPI();
-                if (response.status === 200 && response.data.length > 0) {
-                    const userEmail = response.data[0].user;
-                    const userPassword = response.data[0].pwd;
-                    console.log(response)
-                    setEmailAddress(userEmail);
+        setEmailAddress(userEmail);
+        localStorage.setItem("flickMail", userEmail);
+        localStorage.setItem("flickMailPwd", userPassword);
+        return;
+      }
 
-                    localStorage.setItem('flickMail', userEmail);
-                    localStorage.setItem('flickMailPwd', userPassword);
-                } else {
-                    console.error("Failed to fetch email or empty response");
-                    setEmailAddress("Error loading email");
-                }
-            } catch (error) {
-                console.error("Error fetching email:", error);
-                setEmailAddress("Error loading email");
-            }
-        };
+    } catch (error) {
+      console.error("API call failed:", error);
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // wait 1s
+  }
+
+  console.error("Failed to fetch email or empty response after retries");
+  setEmailAddress("Error loading email");
+};
+
 
         fetchEmail();
     }, []);
