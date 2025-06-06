@@ -51,7 +51,7 @@ export default function Sidebar({ onEmailsUpdate }) {
     return;
   }
 
-  let retries = 2;
+  let retries = 3;
   let response = null;
 
   while (retries-- > 0) {
