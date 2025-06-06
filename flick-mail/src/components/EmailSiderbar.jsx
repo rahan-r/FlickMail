@@ -59,6 +59,7 @@ export default function Sidebar({ onEmailsUpdate }) {
                 if (response.status === 200 && response.data.length > 0) {
                     const userEmail = response.data[0].user;
                     const userPassword = response.data[0].pwd;
+                    console.log(response)
                     setEmailAddress(userEmail);
 
                     localStorage.setItem('flickMail', userEmail);
